@@ -11,9 +11,10 @@ using System;
 namespace SistemaAsentamientos.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181105191036_[migracion-usuarios]")]
+    partial class migracionusuarios
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,38 +180,6 @@ namespace SistemaAsentamientos.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("SistemaAsentamientos.Models.Canton", b =>
-                {
-                    b.Property<int>("CantonID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("Estado");
-
-                    b.Property<string>("Nombre");
-
-                    b.Property<int>("ProvinciaID");
-
-                    b.HasKey("CantonID");
-
-                    b.HasIndex("ProvinciaID");
-
-                    b.ToTable("Canton");
-                });
-
-            modelBuilder.Entity("SistemaAsentamientos.Models.Provincia", b =>
-                {
-                    b.Property<int>("ProvinciaID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("Estado");
-
-                    b.Property<string>("Nombre");
-
-                    b.HasKey("ProvinciaID");
-
-                    b.ToTable("Provincia");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -253,14 +222,6 @@ namespace SistemaAsentamientos.Data.Migrations
                     b.HasOne("SistemaAsentamientos.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SistemaAsentamientos.Models.Canton", b =>
-                {
-                    b.HasOne("SistemaAsentamientos.Models.Provincia", "Provincia")
-                        .WithMany("Cantones")
-                        .HasForeignKey("ProvinciaID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

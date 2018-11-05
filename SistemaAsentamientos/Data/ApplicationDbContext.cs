@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,6 +23,8 @@ namespace SistemaAsentamientos.Data
             // Add your customizations after calling base.OnModelCreating(builder);
         }
 
-        public DbSet<SistemaAsentamientos.Models.ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
+
+        public DbSet<Provincia> Provincia { get; set; }
     }
 }

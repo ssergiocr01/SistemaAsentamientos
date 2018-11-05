@@ -1,7 +1,7 @@
 ﻿// Write your JavaScript code.
 $('#modalEditar').on('shown.bs.modal', function () {
-    $('#myInput').focus()
-})
+    $('#myInput').focus();
+});
 
 function getUsuario(id, action) {
     $.ajax({
@@ -14,6 +14,7 @@ function getUsuario(id, action) {
 
     });
 }
+
 var items;
 var j = 0;
 //Variables globales por cada propiedad del usuario
@@ -58,9 +59,10 @@ function mostrarUsuario(response) {
         $("#dPhoneNumber").text(val.phoneNumber);
         $("#dRole").text(val.role);
 
-        // Mostrar los datos que deseo eliminar
+        //Mostrar los datos del usuario que deseo eliminar
         $("#eUsuario").text(val.email);
         $('input[name=EIdUsuario]').val(val.id);
+
     });
 }
 
@@ -73,6 +75,7 @@ function getRoles(action) {
             if (j == 0) {
                 for (var i = 0; i < response.length; i++) {
                     document.getElementById('Select').options[i] = new Option(response[i].text, response[i].value);
+                    document.getElementById('SelectNuevo').options[i] = new Option(response[i].text, response[i].value);
                 }
                 j = 1;
             }
@@ -87,6 +90,7 @@ function editarUsuario(action) {
     phoneNumber = $('input[name=PhoneNumber]')[0].value;
     role = document.getElementById('Select');
     selectRole = role.options[role.selectedIndex].text;
+
 
     $.each(items, function (index, val) {
         accessFailedCount = val.accessFailedCount;
@@ -121,6 +125,7 @@ function editarUsuario(action) {
         }
     });
 
+
 }
 
 function ocultarDetalleUsuario() {
@@ -145,15 +150,49 @@ function eliminarUsuario(action) {
 }
 
 function crearUsuario(action) {
-    // Obtener los datos ingresados en los inputs respectivos
+    //Obtener los datos ingresados en los inputs respectivos
     email = $('input[name=EmailNuevo]')[0].value;
     phoneNumber = $('input[name=PhoneNumberNuevo]')[0].value;
     passwordHash = $('input[name=PasswordHashNuevo]')[0].value;
     role = document.getElementById('SelectNuevo');
     selectRole = role.options[role.selectedIndex].text;
 
-    // Vamos a validar ahora que los datos del usuario no estén vacíos
+    //Vamos a validar ahora que los datos del usuario no estén vacíos
     if (email == "") {
-
+        $('#EmailNuevo').focus();
+        alert("Ingrese el email del usuario");
     }
+    else {
+        if (passwordHash == "") {
+            $('#PasswordHashNuevo').focus();
+            alert("Ingrese el password del usuario");
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: action,
+                data: {
+                    email, phoneNumber, passwordHash, selectRole
+                },
+                success: function (response) {
+                    if (response === "Save") {
+                        window.location.href = "Usuarios";
+                    }
+                    else {
+                        $('#mensajenuevo').html("No se puede guardar el usuario. <br/>Seleccione un rol. <br/> Ingrese un email correcto. <br/> El password debe tener de 6-100 caracteres, al menos un caracter especial, una letra mayúscula y un número");
+                    }
+                }
+            });
+        }
+    }
+
+}
+
+var agregarProvincia = () => {
+    var nombre = document.getElementById("Nombre").value;
+    var estados = document.getElementById("Estado");
+    var estado = estados.options[estados.selectedIndex].value;
+    var action = 'Provincias/guardarProvincia';
+    var provincia = new Provincias(nombre, estado, action);
+    provincia.agregarProvincia();
 }

@@ -6,9 +6,9 @@
 
 <h2>@ViewData["Title"]</h2>
 
-@*<p>
-        <a asp-action="Create" class="btn btn-primary">Crear Usuario</a>
-    </p>*@
+<p>
+    <a class="btn btn-primary" data-toggle="modal" data-target="#modalAgregar">Agregar</a>
+</p>
 <table class="table">
     <thead>
         <tr>
@@ -155,7 +155,7 @@
     </div>
 </div>
 
-<!-- Modal Agregar -->
+<!-- Modal -->
 <div class="modal fade" id="modalAgregar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -168,9 +168,10 @@
                     <div class="form-group">
                         <label for="Roles" class="control-label">Roles</label>
                         <select id="SelectNuevo" name="SelectNuevo" class="form-control" onclick="getRoles('Usuarios/GetRoles');">
-                            <option value="0">[Seleccione un Rol...]</option>
+                            <option value="0">Seleccione un rol</option>
                         </select>
                     </div>
+
                     <div class="form-group">
                         <label for="EmailNuevo" class="control-label">Email</label>
                         <input name="EmailNuevo" id="EmailNuevo" class="form-control" />
@@ -180,7 +181,7 @@
                         <input name="PhoneNumberNuevo" id="PhoneNumberNuevo" class="form-control" />
                     </div>
                     <div class="form-group">
-                        <label for="PasswordHashNuevo" class="control-label">Contraseña</label>
+                        <label for="PasswordHashNuevo" class="control-label">Password</label>
                         <input type="password" name="PasswordHashNuevo" id="PasswordHashNuevo" class="form-control" />
                     </div>
                     <div class="form-group">
