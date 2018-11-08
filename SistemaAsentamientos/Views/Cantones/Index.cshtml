@@ -1,0 +1,100 @@
+﻿@model IEnumerable<SistemaAsentamientos.Models.Canton>
+
+@{
+    ViewData["Title"] = "Administración de Cantones";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p>
+    <a data-toggle='modal' data-target='#modalCS' class="btn btn-primary">Crear Cant&oacute;n</a>
+</p>
+
+<div class="form-group">
+    <div class="col-md-6">
+        <input id="filtrar" name="filtrar" placeholder="Buscar" onKeyUp="" class="form-control" />
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Provincia)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estado)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Provincia.ProvinciaID)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CantonID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.CantonID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.CantonID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!--Modal Agregar Cantón-->
+<div class="modal fade" id="modalCS" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Agregar Cant&oacute;n</h4>
+            </div>
+            <div class="modal-body">
+                <form asp-action="">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label for="Nombre" class="col-md-2 control-label">Nombre</label>
+                            <div class="col-md-10">
+                                <input for="Nombre" id="Nombre" placeholder="Nombre" name="Nombre" class="form-control" />
+                            </div>
+                        </div>                        
+                        <div class="form-group">
+                            <label for="Estado" class="col-md-2 control-label">Costo</label>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" for="Estado" id="Estado" name="Estado" />
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Provincia" class="col-md-2 control-label">Provincia</label>
+                            <div class="col-md-10">
+                                <select id="ProvinciaCantones" class="form-control">
+                                    <option value='0'>Seleccione una Provincia</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <label id="mensaje" class="col-md-2 control-label"></label>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                <button type="button" onclick="agregarCanton()" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -26,5 +26,7 @@ namespace SistemaAsentamientos.Data
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
 
         public DbSet<Provincia> Provincia { get; set; }
+
+        public DbSet<SistemaAsentamientos.Models.Canton> Canton { get; set; }
     }
 }
