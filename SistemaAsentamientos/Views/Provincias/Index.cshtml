@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<SistemaAsentamientos.Models.Provincia>
 
 @{
-    ViewData["Title"] = "Listado de Provincias";
+    ViewData["Title"] = "Administración de Provincias";
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -9,37 +9,33 @@
 <p>
     <a data-toggle='modal' data-target='#modalAC' class='btn btn-primary'>Crear provincia</a>
 </p>
+
+<div class="form-group">
+    <div class="col-md-6">
+        <input id="filtrar" name="filtrar" placeholder="Buscar" onKeyUp="filtrarDatos(1);" class="form-control" />
+    </div>
+</div>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Nombre)
+                Nombre
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Estado)
+                Estado
             </th>
-            <th></th>
+            <th align="center">
+                Opciones
+            </th>
         </tr>
     </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Estado)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ProvinciaID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ProvinciaID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ProvinciaID">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
+    <tbody id="resultSearch"></tbody>
 </table>
+
+<div id="paginado">
+
+</div>
 
 <!--Modal Agregar Categoria-->
 <div class="modal fade" id="modalAC" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -57,7 +53,7 @@
                             <div class="col-md-10">
                                 <input for="Nombre" id="Nombre" placeholder="Nombre" name="Nombre" class="form-control" />
                             </div>
-                        </div>                        
+                        </div>
                         <div class="form-group">
                             <label for="Estado" class="col-md-2 control-label">Estado</label>
                             <div class="col-md-10">
@@ -67,15 +63,66 @@
                                     <option value='false'>No activo</option>
                                 </select>
                             </div>
-                        </div>                        
+                        </div>
+                        <label id="mensaje" class="col-md-2 control-label"></label>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                 <button type="button" onclick="agregarProvincia()" class="btn btn-primary">Guardar</button>
-                <label id="mensaje" class="col-md-6 control-label"></label>
             </div>
         </div>
     </div>
 </div>
+
+<!--Modal Estado-->
+<div class="modal fade" id="ModalEstado" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="titleProvincia" class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                <button type="button" onclick="editarProvincia()" class="btn btn-primary">Aceptar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+@*<table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nombre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Estado)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Estado)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ProvinciaID">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ProvinciaID">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ProvinciaID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>*@

@@ -2,21 +2,45 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SistemaAsentamientos.Data;
 using SistemaAsentamientos.Models;
+using SistemaAsentamientos.ModelsClass;
 
 namespace SistemaAsentamientos.Controllers
 {
     public class ProvinciasController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private ProvinciasModels provinciasModels;
 
         public ProvinciasController(ApplicationDbContext context)
         {
             _context = context;
+            provinciasModels = new ProvinciasModels(_context);
+        }
+
+        public List<object[]> filtrarDatos(int numPagina, string valor)
+        {
+            return provinciasModels.filtrarDatos(numPagina, valor);
+        }
+
+        public List<IdentityError> guardarProvincia(string nombre, string estado)
+        {
+            return provinciasModels.guardarProvincia(nombre, estado);
+        }
+
+        public List<Provincia> getProvincias(int id)
+        {
+            return provinciasModels.getProvincias(id);
+        }
+
+        public List<IdentityError> editarProvincia(int id, string nombre, Boolean estado, string funcion)
+        {
+            return provinciasModels.editarProvincia(id, nombre, estado, funcion);
         }
 
         // GET: Provincias
@@ -24,6 +48,8 @@ namespace SistemaAsentamientos.Controllers
         {
             return View(await _context.Provincia.ToListAsync());
         }
+
+
 
         // GET: Provincias/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -43,27 +69,6 @@ namespace SistemaAsentamientos.Controllers
             return View(provincia);
         }
 
-        // GET: Provincias/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Provincias/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProvinciaID,Nombre,Estado")] Provincia provincia)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(provincia);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(provincia);
-        }
 
         // GET: Provincias/Edit/5
         public async Task<IActionResult> Edit(int? id)

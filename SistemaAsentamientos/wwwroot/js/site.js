@@ -3,6 +3,10 @@ $('#modalEditar').on('shown.bs.modal', function () {
     $('#myInput').focus();
 });
 
+$('#modalAC').on('shown.bs.modal', function () {
+    $('#Nombre').focus();
+});
+
 function getUsuario(id, action) {
     $.ajax({
         type: "POST",
@@ -188,6 +192,13 @@ function crearUsuario(action) {
 
 }
 
+$().ready(() => {
+    document.getElementById("filtrar").focus();
+    filtrarDatos(1);
+});
+
+var idProvincia;
+
 var agregarProvincia = () => {
     var nombre = document.getElementById("Nombre").value;
     var estados = document.getElementById("Estado");
@@ -195,4 +206,24 @@ var agregarProvincia = () => {
     var action = 'Provincias/guardarProvincia';
     var provincia = new Provincias(nombre, estado, action);
     provincia.agregarProvincia();
+}
+
+var filtrarDatos = (numPagina) => {
+    var valor = document.getElementById("filtrar").value;
+    var action = 'Provincias/filtrarDatos';
+    var provincia = new Provincias(valor, "", action);
+    provincia.filtrarDatos(numPagina);
+}
+
+var editarEstado = (id) => {
+    idProvincia = id;
+    var action = 'Provincias/getProvincias';
+    var provincia = new Provincias("", "", action);
+    provincia.qetProvincia(id);
+}
+
+var editarProvincia = () => {
+    var action = 'Provincias/editarProvincia';
+    var provincia = new Provincias("", "", action);
+    provincia.editarProvincia(idProvincia, "estado");
 }
