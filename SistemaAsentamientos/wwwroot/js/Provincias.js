@@ -7,7 +7,7 @@ class Provincias {
         this.action = action;
     }
 
-    agregarProvincia() {
+    agregarProvincia(id, funcion) {
         if (this.nombre == "") {
             document.getElementById("Nombre").focus();
         } else {
@@ -22,7 +22,7 @@ class Provincias {
                     type: "POST",
                     url: action,
                     data: {
-                        nombre, estado
+                        id, nombre, estado, funcion
                     },
                     success: (response) => {
                         $.each(response, (index, val) => {
@@ -40,7 +40,7 @@ class Provincias {
         }
     }
 
-    filtrarDatos(numPagina) {
+    filtrarDatos(numPagina, order) {
         var valor = this.nombre;
         var action = this.action;
         if (valor == "") {
@@ -49,7 +49,7 @@ class Provincias {
         $.ajax({
             type: "POST",
             url: action,
-            data: { valor, numPagina },
+            data: { valor, numPagina, order },
             success: (response) => {
                 console.log(response);
                 $.each(response, (index, val) => {
@@ -62,7 +62,7 @@ class Provincias {
         });
     }
 
-    qetProvincia(id) {
+    qetProvincia(id, funcion) {
         var action = this.action;
         $.ajax({
             type: "POST",
@@ -70,10 +70,19 @@ class Provincias {
             data: { id },
             success: (response) => {
                 console.log(response);
-                if (response[0].estado) {
-                    document.getElementById("titleProvincia").innerHTML = "¿Está seguro(a) de desactivar la provincia? " + response[0].nombre;
+                if (funcion == 0) {
+                    if (response[0].estado) {
+                        document.getElementById("titleProvincia").innerHTML = "¿Está seguro(a) de desactivar la categoría? " + response[0].nombre;
+                    } else {
+                        document.getElementById("titleProvincia").innerHTML = "¿Está seguro(a) de habilitar la categoría? " + response[0].nombre;
+                    }
                 } else {
-                    document.getElementById("titleProvincia").innerHTML = "¿Está seguro(a) de habilitar la provincia? " + response[0].nombre;
+                    document.getElementById("Nombre").value = response[0].nombre;
+                    if (response[0].estado) {
+                        document.getElementById("Estado").selectedIndex = 1;
+                    } else {
+                        document.getElementById("Estado").selectedIndex = 2;
+                    }
                 }
                 localStorage.setItem("provincia", JSON.stringify(response));
             }
@@ -81,24 +90,11 @@ class Provincias {
     }
 
     editarProvincia(id, funcion) {
-        var nombre = null;
-        var estado = null;
-        var action = null;
-
-        switch (funcion) {
-            case "estado":
-                var response = JSON.parse(localStorage.getItem("provincia"));
-                nombre = response[0].nombre;
-                estado = response[0].estado;
-                localStorage.removeItem("provincia");
-                this.editar(id, nombre, estado, funcion);
-                break;
-            default:
-        }
-    }
-
-    editar(id, nombre, estado, funcion) {
         var action = this.action;
+        var response = JSON.parse(localStorage.getItem("provincia"));
+        var nombre = response[0].nombre;
+        var estado = response[0].estado;
+        localStorage.removeItem("provincia");
         $.ajax({
             type: "POST",
             url: action,
@@ -116,7 +112,7 @@ class Provincias {
         document.getElementById("Estado").selectedIndex = 0;
         $('#modalAC').modal('hide');
         $('#ModalEstado').modal('hide');
-        filtrarDatos(1);
+        filtrarDatos(1, "nombre");
     }
 }
 

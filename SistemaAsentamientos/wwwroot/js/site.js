@@ -194,36 +194,42 @@ function crearUsuario(action) {
 
 $().ready(() => {
     document.getElementById("filtrar").focus();
-    filtrarDatos(1);
+    filtrarDatos(1,"nombre");
 });
 
 var idProvincia;
+var funcion = 0;
 
 var agregarProvincia = () => {
     var nombre = document.getElementById("Nombre").value;
-    var estados = document.getElementById("Estado");
+    var estados = document.getElementById('Estado');
     var estado = estados.options[estados.selectedIndex].value;
-    var action = 'Provincias/guardarProvincia';
+    if (funcion == 0) {
+        var action = 'Provincias/guardarProvincia';
+    } else {
+        var action = 'Provincias/editarProvincia';
+    }
     var provincia = new Provincias(nombre, estado, action);
-    provincia.agregarProvincia();
+    provincia.agregarProvincia(idProvincia, funcion);
 }
 
-var filtrarDatos = (numPagina) => {
+var filtrarDatos = (numPagina, order) => {
     var valor = document.getElementById("filtrar").value;
     var action = 'Provincias/filtrarDatos';
     var provincia = new Provincias(valor, "", action);
-    provincia.filtrarDatos(numPagina);
+    provincia.filtrarDatos(numPagina, order);
 }
 
-var editarEstado = (id) => {
+var editarEstado = (id, fun) => {
     idProvincia = id;
+    funcion = fun;
     var action = 'Provincias/getProvincias';
     var provincia = new Provincias("", "", action);
-    provincia.qetProvincia(id);
+    provincia.qetProvincia(id, funcion);
 }
 
 var editarProvincia = () => {
     var action = 'Provincias/editarProvincia';
     var provincia = new Provincias("", "", action);
-    provincia.editarProvincia(idProvincia, "estado");
+    provincia.editarProvincia(idProvincia, funcion);
 }

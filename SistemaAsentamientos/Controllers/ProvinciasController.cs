@@ -23,9 +23,15 @@ namespace SistemaAsentamientos.Controllers
             provinciasModels = new ProvinciasModels(_context);
         }
 
-        public List<object[]> filtrarDatos(int numPagina, string valor)
+        // GET: Provincias
+        public async Task<IActionResult> Index()
         {
-            return provinciasModels.filtrarDatos(numPagina, valor);
+            return View();
+        }
+
+        public List<object[]> filtrarDatos(int numPagina, string valor, string order)
+        {
+            return provinciasModels.filtrarDatos(numPagina, valor, order);
         }
 
         public List<IdentityError> guardarProvincia(string nombre, string estado)
@@ -38,121 +44,11 @@ namespace SistemaAsentamientos.Controllers
             return provinciasModels.getProvincias(id);
         }
 
-        public List<IdentityError> editarProvincia(int id, string nombre, Boolean estado, string funcion)
+        public List<IdentityError> editarProvincia(int id, string nombre, Boolean estado, int funcion)
         {
             return provinciasModels.editarProvincia(id, nombre, estado, funcion);
         }
 
-        // GET: Provincias
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Provincia.ToListAsync());
-        }
-
-
-
-        // GET: Provincias/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var provincia = await _context.Provincia
-                .SingleOrDefaultAsync(m => m.ProvinciaID == id);
-            if (provincia == null)
-            {
-                return NotFound();
-            }
-
-            return View(provincia);
-        }
-
-
-        // GET: Provincias/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var provincia = await _context.Provincia.SingleOrDefaultAsync(m => m.ProvinciaID == id);
-            if (provincia == null)
-            {
-                return NotFound();
-            }
-            return View(provincia);
-        }
-
-        // POST: Provincias/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProvinciaID,Nombre,Estado")] Provincia provincia)
-        {
-            if (id != provincia.ProvinciaID)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(provincia);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProvinciaExists(provincia.ProvinciaID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(provincia);
-        }
-
-        // GET: Provincias/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var provincia = await _context.Provincia
-                .SingleOrDefaultAsync(m => m.ProvinciaID == id);
-            if (provincia == null)
-            {
-                return NotFound();
-            }
-
-            return View(provincia);
-        }
-
-        // POST: Provincias/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var provincia = await _context.Provincia.SingleOrDefaultAsync(m => m.ProvinciaID == id);
-            _context.Provincia.Remove(provincia);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ProvinciaExists(int id)
-        {
-            return _context.Provincia.Any(e => e.ProvinciaID == id);
-        }
+             
     }
 }
