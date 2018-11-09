@@ -1,20 +1,20 @@
 ﻿var localStorage = window.localStorage;
 
-class Provincias {
-    constructor(nombre, estado, action) {
-        this.nombre = nombre;
+class AmenazasNaturales {
+    constructor(descripcion, estado, action) {
+        this.descripcion = descripcion;
         this.estado = estado;
         this.action = action;
     }
 
-    agregarProvincia(id, funcion) {
-        if (this.nombre == "") {
-            document.getElementById("Nombre").focus();
+    agregarAmenaza(id, funcion) {
+        if (this.descripcion == "") {
+            document.getElementById("Descripcion").focus();
         } else {
             if (this.estado == "0") {
                 document.getElementById("mensaje").innerHTML = "Seleccione un estado";
             } else {
-                var nombre = this.nombre;
+                var descripcion = this.descripcion;
                 var estado = this.estado;
                 var action = this.action;
                 var mensaje = '';
@@ -22,7 +22,7 @@ class Provincias {
                     type: "POST",
                     url: action,
                     data: {
-                        id, nombre, estado, funcion
+                        id, descripcion, estado, funcion
                     },
                     success: (response) => {
                         $.each(response, (index, val) => {
@@ -31,17 +31,17 @@ class Provincias {
                         if (mensaje === "Save") {
                             this.restablecer();
                         } else {
-                            document.getElementById("mensaje").innerHTML = "No se puede guardar la provincia";
+                            document.getElementById("mensaje").innerHTML = "No se puede guardar la amenaza natural";
                         }
                         //console.log(response);
                     }
                 });
             }
         }
-    }
+    }    
 
-    filtrarProvincias(numPagina, order) {
-        var valor = this.nombre;
+    filtrarAmenazas(numPagina, order) {
+        var valor = this.descripcion;
         var action = this.action;
         if (valor == "") {
             valor = "null";
@@ -53,16 +53,14 @@ class Provincias {
             success: (response) => {
                 console.log(response);
                 $.each(response, (index, val) => {
-
                     $("#resultSearch").html(val[0]);
                     $("#paginado").html(val[1]);
                 });
-
             }
         });
     }
 
-    qetProvincia(id, funcion) {
+    qetAmenaza(id, funcion) {
         var action = this.action;
         $.ajax({
             type: "POST",
@@ -72,33 +70,33 @@ class Provincias {
                 console.log(response);
                 if (funcion == 0) {
                     if (response[0].estado) {
-                        document.getElementById("titleProvincia").innerHTML = "¿Está seguro(a) de desactivar la categoría? " + response[0].nombre;
+                        document.getElementById("titleAmenaza").innerHTML = "¿Está seguro(a) de desactivar la amenaza? " + response[0].descripcion;
                     } else {
-                        document.getElementById("titleProvincia").innerHTML = "¿Está seguro(a) de habilitar la categoría? " + response[0].nombre;
+                        document.getElementById("titleAmenaza").innerHTML = "¿Está seguro(a) de habilitar la amenaza? " + response[0].descripcion;
                     }
                 } else {
-                    document.getElementById("Nombre").value = response[0].nombre;
+                    document.getElementById("Descripcion").value = response[0].descripcion;
                     if (response[0].estado) {
                         document.getElementById("Estado").selectedIndex = 1;
                     } else {
                         document.getElementById("Estado").selectedIndex = 2;
                     }
                 }
-                localStorage.setItem("provincia", JSON.stringify(response));
+                localStorage.setItem("amenaza", JSON.stringify(response));
             }
         });
     }
 
-    editarProvincia(id, funcion) {
+    editarAmenaza(id, funcion) {
         var action = this.action;
-        var response = JSON.parse(localStorage.getItem("provincia"));
-        var nombre = response[0].nombre;
+        var response = JSON.parse(localStorage.getItem("amenaza"));
+        var descripcion = response[0].descripcion;
         var estado = response[0].estado;
-        localStorage.removeItem("provincia");
+        localStorage.removeItem("amenaza");
         $.ajax({
             type: "POST",
             url: action,
-            data: { id, nombre, estado, funcion },
+            data: { id, descripcion, estado, funcion },
             success: (response) => {
                 console.log(response);
                 this.restablecer();
@@ -107,14 +105,11 @@ class Provincias {
     }
 
     restablecer() {
-        document.getElementById("Nombre").value = "";
+        document.getElementById("Descripcion").value = "";
         document.getElementById("mensaje").innerHTML = "";
         document.getElementById("Estado").selectedIndex = 0;
-        $('#modalAC').modal('hide');
-        $('#ModalEstado').modal('hide');
-        filtrarProvincias(1, "nombre");
+        $('#modalAN').modal('hide');
+        $('#ModalEstadoAmenaza').modal('hide');
+        this.filtrarAmenazas(1, "descripcion");
     }
 }
-
-
-

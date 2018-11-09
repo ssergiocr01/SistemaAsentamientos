@@ -1,16 +1,16 @@
 ﻿@{
-    ViewData["Title"] = "Provincias";
+    ViewData["Title"] = "Amenazas Naturales";
 }
 
 <h2>@ViewData["Title"]</h2>
 
 <p>
-    <a data-toggle='modal' data-target='#modalAC' class='btn btn-primary'>Crear provincia</a>
+    <a data-toggle='modal' data-target='#modalAN' class='btn btn-primary'>Crear amenaza natural</a>
 </p>
 
 <div class="form-group">
     <div class="col-md-6">
-        <input id="filtrar" name="filtrar" placeholder="Buscar" onKeyUp="filtrarProvincias(1,'nombre');" class="form-control" />
+        <input id="filtrar" name="filtrar" placeholder="Buscar" onKeyUp="filtrarAmenazas(1,'descripcion');" class="form-control" />
     </div>
 </div>
 
@@ -18,10 +18,10 @@
     <thead>
         <tr>
             <th>
-                <a href="#" onclick='filtrarProvincias(1,"nombre")'>Nombre</a>
+                <a href="#" onclick='filtrarAmenazas(1,"descripcion")'>Descripci&oacute;n</a>
             </th>
             <th>
-                <a href="#" onclick='filtrarProvincias(1, "estado")'>Estado</a>
+                <a href="#" onclick='filtrarAmenazas(1, "descripcion")'>Estado</a>
             </th>
             <th align="center">
                 Opciones
@@ -35,21 +35,21 @@
 
 </div>
 
-<!--Modal Agregar Provincia-->
-<div class="modal fade" id="modalAC" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<!--Modal Agregar Amenaza-->
+<div class="modal fade" id="modalAN" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Agregar provincia</h4>
+                <h4 class="modal-title" id="myModalLabel">Agregar Amenaza Natural</h4>
             </div>
             <div class="modal-body">
                 <form asp-action="">
                     <div class="form-horizontal">
                         <div class="form-group">
-                            <label for="Nombre" class="col-md-2 control-label">Nombre</label>
+                            <label for="Descripcion" class="col-md-2 control-label">Descripcion</label>
                             <div class="col-md-10">
-                                <input for="Nombre" id="Nombre" placeholder="Nombre" name="Nombre" class="form-control" />
+                                <input for="Descripcion" id="Descripcion" placeholder="Descripcion" name="Descripcion" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -68,28 +68,26 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                <button type="button" onclick="agregarProvincia()" class="btn btn-primary">Guardar</button>
+                <button type="button" onclick="agregarAmenaza()" class="btn btn-primary">Guardar</button>
             </div>
         </div>
     </div>
 </div>
 
 <!--Modal Estado-->
-<div class="modal fade" id="ModalEstado" tabindex="-1" role="dialog">
+<div class="modal fade" id="ModalEstadoAmenaza" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 id="titleProvincia" class="modal-title"></h4>
+                <h4 id="titleAmenaza" class="modal-title"></h4>
             </div>
             <div class="modal-body">
 
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                <button type="button" onclick="editarProvincia()" class="btn btn-primary">Aceptar</button>
+                <button type="button" onclick="editarAmenaza()" class="btn btn-primary">Aceptar</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
-

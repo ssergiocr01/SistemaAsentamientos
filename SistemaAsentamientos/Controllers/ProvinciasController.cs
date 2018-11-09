@@ -29,9 +29,9 @@ namespace SistemaAsentamientos.Controllers
             return View();
         }
 
-        public List<object[]> filtrarDatos(int numPagina, string valor, string order)
+        public List<object[]> filtrarProvincias(int numPagina, string valor, string order)
         {
-            return provinciasModels.filtrarDatos(numPagina, valor, order);
+            return provinciasModels.filtrarProvincias(numPagina, valor, order);
         }
 
         public List<IdentityError> guardarProvincia(string nombre, string estado)

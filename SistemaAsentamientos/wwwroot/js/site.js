@@ -7,6 +7,10 @@ $('#modalAC').on('shown.bs.modal', function () {
     $('#Nombre').focus();
 });
 
+$('#modalAN').on('shown.bs.modal', function () {
+    $('#Descripcion').focus();
+});
+
 function getUsuario(id, action) {
     $.ajax({
         type: "POST",
@@ -128,8 +132,6 @@ function editarUsuario(action) {
             }
         }
     });
-
-
 }
 
 function ocultarDetalleUsuario() {
@@ -194,11 +196,23 @@ function crearUsuario(action) {
 
 $().ready(() => {
     document.getElementById("filtrar").focus();
-    filtrarDatos(1,"nombre");
+
+    //Provincias
+    filtrarProvincias(1, "nombre");
+
+    //Amenazas naturales
+    filtrarAmenazas(1, "descripcion");
+    
 });
 
+
 var idProvincia;
+var idAmenaza;
 var funcion = 0;
+
+/*
+ * Tabla Provincia
+ */
 
 var agregarProvincia = () => {
     var nombre = document.getElementById("Nombre").value;
@@ -213,11 +227,11 @@ var agregarProvincia = () => {
     provincia.agregarProvincia(idProvincia, funcion);
 }
 
-var filtrarDatos = (numPagina, order) => {
+var filtrarProvincias = (numPagina, order) => {
     var valor = document.getElementById("filtrar").value;
-    var action = 'Provincias/filtrarDatos';
+    var action = 'Provincias/filtrarProvincias';
     var provincia = new Provincias(valor, "", action);
-    provincia.filtrarDatos(numPagina, order);
+    provincia.filtrarProvincias(numPagina, order);
 }
 
 var editarEstado = (id, fun) => {
@@ -233,3 +247,43 @@ var editarProvincia = () => {
     var provincia = new Provincias("", "", action);
     provincia.editarProvincia(idProvincia, funcion);
 }
+
+/*
+ * Tabla Amenaza Natural
+ */
+
+var agregarAmenaza = () => {
+    var descripcion = document.getElementById("Descripcion").value;
+    var estados = document.getElementById('Estado');
+    var estado = estados.options[estados.selectedIndex].value;
+    if (funcion == 0) {
+        var action = 'AmenazasNaturales/guardarAmenaza';
+    } else {
+        var action = 'AmenazasNaturales/editarAmenaza';
+    }
+    var amenaza = new AmenazasNaturales(descripcion, estado, action);
+    amenaza.agregarAmenaza(idAmenaza, funcion);
+}
+
+var filtrarAmenazas = (numPagina, order) => {
+    var valor = document.getElementById("filtrar").value;
+    var action = 'AmenazasNaturales/filtrarAmenazas';
+    var amenaza = new AmenazasNaturales(valor, "", action);
+    amenaza.filtrarAmenazas(numPagina, order);
+}
+
+var editarEstadoAmenaza = (id, fun) => {
+    idAmenaza = id;
+    funcion = fun;
+    var action = 'AmenazasNaturales/getAmenazas';
+    var amenaza = new AmenazasNaturales("", "", action);
+    amenaza.qetAmenaza(id, funcion);
+}
+
+var editarAmenaza = () => {
+    var action = 'AmenazasNaturales/editarAmenaza';
+    var amenaza = new AmenazasNaturales("", "", action);
+    amenaza.editarAmenaza(idAmenaza, funcion);
+}
+
+

@@ -4,29 +4,29 @@ using SistemaAsentamientos.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SistemaAsentamientos.ModelsClass
 {
-    public class ProvinciasModels
+    public class AmenazasModels
     {
         private ApplicationDbContext context;
         private Boolean estados;
 
-        public ProvinciasModels(ApplicationDbContext context)
+        public AmenazasModels(ApplicationDbContext context)
         {
             this.context = context;
-            //filtrarProvincias(1, "Alajuela");
         }
 
-        public List<IdentityError> guardarProvincia(string nombre, string estado)
+        public List<IdentityError> guardarAmenaza(string descripcion, string estado)
         {
             var errorList = new List<IdentityError>();
-            var provincia = new Provincia
+            var amenaza = new AmenazaNatural
             {
-                Nombre = nombre,
+                Descripcion = descripcion,
                 Estado = Convert.ToBoolean(estado),
             };
-            context.Add(provincia);
+            context.Add(amenaza);
 
             context.SaveChanges();
             errorList.Add(new IdentityError
@@ -37,27 +37,27 @@ namespace SistemaAsentamientos.ModelsClass
             return errorList;
         }
 
-        public List<object[]> filtrarProvincias(int numPagina, string valor, string order)
+        public List<object[]> filtrarAmenazas(int numPagina, string valor, string order)
         {
-            int count = 0, cant, numRegistros = 0, inicio = 0, reg_por_pagina = 7;
+            int count = 0, cant, numRegistros = 0, inicio = 0, reg_por_pagina = 3;
             int can_paginas, pagina;
             string dataFilter = "", paginador = "", Estado = null;
             List<object[]> data = new List<object[]>();
-            IEnumerable<Provincia> query;
-            List<Provincia> provincias = null;
+            IEnumerable<AmenazaNatural> query;
+            List<AmenazaNatural> amenazas = null;
             switch (order)
             {
-                case "nombre":
-                    provincias = context.Provincia.OrderBy(c => c.Nombre).ToList();
+                case "descripcion":
+                    amenazas = context.AmenazaNatural.OrderBy(a => a.Descripcion).ToList();
                     break;
                 case "estado":
-                    provincias = context.Provincia.OrderBy(c => c.Estado).ToList();
+                    amenazas = context.AmenazaNatural.OrderBy(a => a.Estado).ToList();
                     break;
                 default:
                     break;
             }
 
-            numRegistros = provincias.Count;
+            numRegistros = amenazas.Count;
             if ((numRegistros % reg_por_pagina) > 0)
             {
                 numRegistros += 1;
@@ -66,11 +66,11 @@ namespace SistemaAsentamientos.ModelsClass
             can_paginas = (numRegistros / reg_por_pagina);
             if (valor == "null")
             {
-                query = provincias.Skip(inicio).Take(reg_por_pagina);
+                query = amenazas.Skip(inicio).Take(reg_por_pagina);
             }
             else
             {
-                query = provincias.Where(c => c.Nombre.StartsWith(valor)).Skip(inicio).Take(reg_por_pagina);
+                query = amenazas.Where(a => a.Descripcion.StartsWith(valor)).Skip(inicio).Take(reg_por_pagina);
             }
             cant = query.Count();
 
@@ -78,19 +78,19 @@ namespace SistemaAsentamientos.ModelsClass
             {
                 if (item.Estado == true)
                 {
-                    Estado = "<a data-toggle='modal' data-target='#ModalEstado' onclick='editarEstado(" + item.ProvinciaID + ',' + 0 + ")' " +
+                    Estado = "<a data-toggle='modal' data-target='#ModalEstadoAmenaza' onclick='editarEstadoAmenaza(" + item.AmenazaNaturalID + ',' + 0 + ")' " +
                         "class='btn btn-success'>Activo</a>";
                 }
                 else
                 {
-                    Estado = "<a data-toggle='modal' data-target='#ModalEstado' onclick='editarEstado(" + item.ProvinciaID + ',' + 0 + ")' " +
+                    Estado = "<a data-toggle='modal' data-target='#ModalEstadoAmenaza' onclick='editarEstadoAmenaza(" + item.AmenazaNaturalID + ',' + 0 + ")' " +
                         "class='btn btn-danger'>No activo</a>";
                 }
                 dataFilter += "<tr>" +
-                      "<td>" + item.Nombre + "</td>" +
+                      "<td>" + item.Descripcion + "</td>" +
                       "<td>" + Estado + " </td>" +
                       "<td>" +
-                      "<a data-toggle='modal' data-target='#modalAC' onclick='editarEstado(" + item.ProvinciaID + ',' + 1 + ")'" +
+                      "<a data-toggle='modal' data-target='#modalAN' onclick='editarEstadoAmenaza(" + item.AmenazaNaturalID + ',' + 1 + ")'" +
                       "class='btn btn-warning'>Editar</a> &nbsp;" +
                       "</td>" +
                   "</tr>";
@@ -100,8 +100,8 @@ namespace SistemaAsentamientos.ModelsClass
                 if (numPagina > 1)
                 {
                     pagina = numPagina - 1;
-                    paginador += "<a class='btn btn-default' onclick='filtrarProvincias(" + 1 + ',' + '"' + order + '"' + ")'> << </a>" +
-                    "<a class='btn btn-default' onclick='filtrarProvincias(" + pagina + ',' + '"' + order + '"' + ")'> < </a>";
+                    paginador += "<a class='btn btn-default' onclick='filtrarAmenazas(" + 1 + ',' + '"' + order + '"' + ")'> << </a>" +
+                    "<a class='btn btn-default' onclick='filtrarAmenazas(" + pagina + ',' + '"' + order + '"' + ")'> < </a>";
                 }
                 if (1 < can_paginas)
                 {
@@ -110,8 +110,8 @@ namespace SistemaAsentamientos.ModelsClass
                 if (numPagina < can_paginas)
                 {
                     pagina = numPagina + 1;
-                    paginador += "<a class='btn btn-default' onclick='filtrarProvincias(" + pagina + ',' + '"' + order + '"' + ")'>  > </a> " +
-                                 "<a class='btn btn-default' onclick='filtrarProvincias(" + can_paginas + ',' + '"' + order + '"' + ")'> >> </a>";
+                    paginador += "<a class='btn btn-default' onclick='filtrarAmenazas(" + pagina + ',' + '"' + order + '"' + ")'>  > </a> " +
+                                 "<a class='btn btn-default' onclick='filtrarAmenazas(" + can_paginas + ',' + '"' + order + '"' + ")'> >> </a>";
                 }
             }
             object[] dataObj = { dataFilter, paginador };
@@ -119,12 +119,12 @@ namespace SistemaAsentamientos.ModelsClass
             return data;
         }
 
-        public List<Provincia> getProvincias(int id)
+        public List<AmenazaNatural> getAmenazas(int id)
         {
-            return context.Provincia.Where(p => p.ProvinciaID == id).ToList();
+            return context.AmenazaNatural.Where(a => a.AmenazaNaturalID == id).ToList();
         }
 
-        public List<IdentityError> editarProvincia(int idProvincia, string nombre, Boolean estado, int funcion)
+        public List<IdentityError> editarAmenaza(int idAmenaza, string descripcion, Boolean estado, int funcion)
         {
             var errorList = new List<IdentityError>();
             string code = "", des = "";
@@ -144,15 +144,15 @@ namespace SistemaAsentamientos.ModelsClass
                     estados = estado;
                     break;
             }
-            var provincia = new Provincia()
+            var amenaza = new AmenazaNatural()
             {
-                ProvinciaID = idProvincia,
-                Nombre = nombre,
+                AmenazaNaturalID = idAmenaza,
+                Descripcion = descripcion,
                 Estado = estados
             };
             try
             {
-                context.Update(provincia);
+                context.Update(amenaza);
                 context.SaveChanges();
                 code = "Save";
                 des = "Save";

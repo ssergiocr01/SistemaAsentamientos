@@ -37,6 +37,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administración<b class="caret"></b></a>
                         <ul class="dropdown-menu">
+                            <li><a asp-area="" asp-controller="AmenazasNaturales" asp-action="Index">Amenazas Naturales</a></li>
                             <li><a asp-area="" asp-controller="Cantones" asp-action="Index">Cantones</a></li>
                             <li><a asp-area="" asp-controller="Provincias" asp-action="Index">Provincias</a></li>
                             <li><a asp-area="" asp-controller="Usuarios" asp-action="Index">Usuarios</a></li>
@@ -66,6 +67,7 @@
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/AmenazasNaturales.js" asp-append-version="true"></script>
         <script src="~/js/Provincias.js" asp-append-version="true"></script>
         <script src="~/js/Cantones.js" asp-append-version="true"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
